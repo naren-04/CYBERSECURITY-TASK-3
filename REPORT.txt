@@ -1,0 +1,18 @@
+Task 3 – Vulnerability Scan
+
+Tool Used: OpenVAS (Greenbone)
+Target: Kali Linux VM
+Scan Type: Full and Fast
+
+Findings:
+1. Open SSH port – Medium
+2. Outdated services – Medium
+3. SSL certificate warnings – Low
+
+Critical Vulnerabilities: None
+
+CVSS:
+CVSS is a scoring system from 0 to 10 that shows how dangerous a vulnerability is.
+
+Conclusion:
+The system contains some medium and low risks which can be fixed by updates and firewall configuration.
