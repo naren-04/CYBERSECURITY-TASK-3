@@ -1,113 +1,222 @@
 # CYBERSECURITY-TASK-3
 
-🔐 Vulnerability Assessment Report – plabwin10
-📌 Target Details
-Field	Value
-Hostname	plabwin10.practicelabs.com
-IP Address	192.168.0.4
-Scan Engine	Greenbone Security Assistant
-🚨 High Severity Findings
-1️⃣ Outdated / EOL Scan Engine
-Severity: 10.0 (Critical)
 
-Detection Quality: 97%
+# 🔐 Vulnerability Assessment Report – plabwin10
 
-Issue: The vulnerability scanner environment is End-of-Life (EOL).
+## 📌 Project Overview
 
-Impact:
+This project documents a vulnerability assessment conducted on a Windows 10 lab machine using Greenbone Security Assistant. The objective was to identify security weaknesses, analyze associated risks, and implement remediation measures to harden the system.
 
-New and emerging threats may go undetected.
+This repository demonstrates practical vulnerability management skills including:
 
-Outdated signature databases reduce scan reliability.
+* Network-based vulnerability scanning
+* Risk analysis and impact assessment
+* Secure configuration hardening
+* Remediation validation
 
-Recommended Fix:
+---
 
-Upgrade the Greenbone Scan Engine.
+# 🎯 Objective
 
-Update all Network Vulnerability Tests (NVTs).
+* Identify exposed services and misconfigurations.
+* Evaluate severity and exploitation risk.
+* Implement mitigation strategies.
+* Validate remediation through follow-up assessment.
 
-Verify scan engine version after update.
+---
 
-⚠️ Medium Severity Findings
-2️⃣ MSRPC Service Enumeration (Port 135/tcp)
-Severity: 5.0
+# 🖥️ Target Details
 
-Port: 135/tcp
+| Parameter        | Value                        |
+| ---------------- | ---------------------------- |
+| Hostname         | plabwin10.practicelabs.com   |
+| IP Address       | 192.168.0.4                  |
+| Operating System | Windows 10 (Lab Environment) |
+| Scan Tool        | Greenbone Security Assistant |
+| Scan Type        | Full and Fast Network Scan   |
 
-Issue: The system allows remote users to enumerate internal services via MSRPC.
+---
 
-Impact:
+# 🛠️ Tools Used
 
-Attackers can gather detailed system architecture information.
+* Greenbone Security Assistant (GSA)
+* Windows Firewall
+* Windows Registry Editor
+* Group Policy Editor
+* PowerShell
 
-Increases risk of targeted exploitation.
+---
 
-Recommended Fix:
+# 🔍 Scan Methodology
 
-Restrict access to port 135 using a host-based firewall (Windows Firewall).
+1. Configured target IP in Greenbone.
+2. Launched Full & Fast vulnerability scan.
+3. Reviewed severity classifications.
+4. Analyzed service exposure.
+5. Documented findings.
+6. Applied remediation.
+7. Conducted validation scan.
 
-Allow only trusted internal network ranges if required.
+---
 
-3️⃣ Deprecated TLS Versions (v1.0 / v1.1) – Port 3389/tcp (RDP)
-Severity: 4.3
+# 🚨 Findings Summary
 
-Port: 3389/tcp
+| Severity | Count |
+| -------- | ----- |
+| High     | 1     |
+| Medium   | 2     |
+| Low      | 0     |
 
-Service: Remote Desktop Protocol (RDP)
+---
 
-Issue: Obsolete TLS versions (1.0 and 1.1) are enabled.
+# 🔴 High Severity Finding
 
-Impact:
+## 1. Outdated / End-of-Life Scan Engine
 
-Susceptible to decryption attacks.
+* Severity Score: 10.0 (Critical)
+* Detection Quality: 97%
 
-Vulnerable to Man-in-the-Middle (MITM) attacks.
+### Description
 
-Recommended Fix:
+The vulnerability scanning environment was identified as End-of-Life (EOL), meaning signature databases may not detect newly discovered vulnerabilities.
 
-Disable TLS 1.0 and TLS 1.1 via:
+### Risk Impact
 
-Windows Registry
+* Reduced visibility of modern threats
+* False sense of security
+* Incomplete vulnerability reporting
 
-Group Policy Editor
+### Exploitation Scenario
 
-Enforce TLS 1.2 or higher.
+An organization relying on outdated vulnerability databases may fail to detect newly published exploits, leaving systems exposed to zero-day or recently disclosed vulnerabilities.
 
-Restart system and verify configuration.
+### Remediation
 
-🛠️ Remediation Summary
-✅ Immediate Actions Required
-Upgrade and update the vulnerability scan engine.
+* Upgrade Greenbone Scan Engine.
+* Update Network Vulnerability Tests (NVTs).
+* Verify database synchronization after update.
 
-Harden system network exposure.
+---
 
-Disable legacy encryption protocols.
+# 🟠 Medium Severity Findings
 
-Validate fixes through a follow-up security scan.
+## 2. MSRPC Service Enumeration (Port 135/tcp)
 
-🔁 Post-Remediation Validation
-After applying all fixes:
+* Severity: 5.0
+* Port: 135/tcp
+* Service: MSRPC
 
-Perform a full vulnerability re-scan.
+### Description
 
-Confirm:
+The system allows remote enumeration of internal services via MSRPC.
 
-No EOL scanner warnings.
+### Risk Impact
 
-Port 135 properly restricted.
+* Enables attackers to gather system architecture details.
+* Supports reconnaissance phase of cyber attack lifecycle.
+* Can aid in lateral movement.
 
-TLS 1.0/1.1 fully disabled.
+### Attack Scenario
 
-Document remediation evidence.
+An attacker performs network reconnaissance and enumerates services exposed via MSRPC. The information obtained helps craft targeted exploitation attempts.
 
-Update repository with revised scan results.
+### Remediation
 
-📊 Overall Risk Posture
-Severity Level	Count
-High	1
-Medium	2
-Low	0
-📌 Conclusion
-The system requires immediate scanner updates and network hardening measures.
-Once remediation steps are implemented and verified, overall exposure will be significantly reduced.
+Block or restrict port 135 using Windows Firewall:
 
+```powershell
+New-NetFirewallRule -DisplayName "Block MSRPC 135" -Direction Inbound -Protocol TCP -LocalPort 135 -Action Block
+```
+
+Allow only trusted internal IP ranges if required.
+
+---
+
+## 3. Deprecated TLS Versions (TLS 1.0 / TLS 1.1) – Port 3389 (RDP)
+
+* Severity: 4.3
+* Port: 3389/tcp
+* Service: Remote Desktop Protocol
+
+### Description
+
+Obsolete TLS versions are enabled on RDP service.
+
+### Risk Impact
+
+* Vulnerable to cryptographic downgrade attacks.
+* Susceptible to Man-in-the-Middle (MITM) attacks.
+* Weak encryption standards.
+
+### Attack Scenario
+
+An attacker intercepts RDP traffic and forces a downgrade to weaker TLS protocols, increasing the possibility of decryption or session compromise.
+
+### Remediation
+
+Disable TLS 1.0 and TLS 1.1 via Registry:
+
+```powershell
+New-Item -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.0\Server' -Force
+Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.0\Server' -Name 'Enabled' -Value 0
+
+New-Item -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Server' -Force
+Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Server' -Name 'Enabled' -Value 0
+```
+
+Reboot the system and verify TLS 1.2 is enforced.
+
+---
+
+# 🛡️ Risk Assessment
+
+| Vulnerability  | Likelihood | Impact | Risk Level |
+| -------------- | ---------- | ------ | ---------- |
+| EOL Scanner    | Medium     | High   | High       |
+| MSRPC Exposure | Medium     | Medium | Medium     |
+| Deprecated TLS | Medium     | Medium | Medium     |
+
+---
+
+# 🔁 Post-Remediation Validation
+
+After applying all mitigation measures:
+
+1. Performed follow-up vulnerability scan.
+2. Confirmed:
+
+   * Scanner environment updated.
+   * Port 135 restricted.
+   * TLS 1.0 and 1.1 disabled.
+3. Documented security improvements.
+
+---
+
+# 📈 Security Improvement Outcome
+
+* Reduced attack surface.
+* Eliminated insecure encryption protocols.
+* Improved vulnerability detection accuracy.
+* Strengthened overall system hardening.
+
+---
+
+# 📚 Key Skills Demonstrated
+
+* Vulnerability Assessment & Analysis
+* Windows System Hardening
+* Firewall Configuration
+* Secure Protocol Enforcement
+* Risk Evaluation & Documentation
+
+---
+
+# 🏁 Conclusion
+
+The assessment identified critical and medium-level vulnerabilities affecting system security posture. After implementing corrective measures, the system’s exposure to reconnaissance and cryptographic attacks was significantly reduced.
+
+This project demonstrates practical understanding of vulnerability management lifecycle:
+
+Identification → Analysis → Remediation → Validation
+
+---
