@@ -1,34 +1,30 @@
 # CYBERSECURITY-TASK-3
-Vulnerability Scan Report:
-Target Information
-Host IP: 192.168.0.4
-Hostname: kali
-Scan Tool: Greenbone Security Assistant (GSA)
-Date: Aug 2, 2023
-Critical Findings (High Severity)
-🚨 Report Outdated / EOL Scan Engine
-Severity: 10.0 (High)
-Location: general/tcp
-QoD: 97%
-Summary: The Greenbone vulnerability feed or engine is end-of-life.
-Impact: Results may be inaccurate or missing critical new vulnerabilities.
-Remediation: Update the GVM/OpenVAS feed and upgrade the scanner to a supported version.
+Vulnerability Assessment Report: plabwin10
+Target Details
+Hostname: plabwin10.practicelabs.com
+IP Address: 192.168.0.4
+Scan Engine: Greenbone Security Assistant
+High Severity Findings
+🔴 Outdated / EOL Scan Engine
+Severity: 10.0
+Detection Quality: 97%
+Issue: The vulnerability scanner environment is end-of-life (EOL).
+Impact: New threats may go undetected due to outdated signature databases.
+Fix: Upgrade the Greenbone scan engine and update NVTs (Network Vulnerability Tests).
 Medium Severity Findings
-⚠️ DCE/RPC and MSRPC Services Enumeration
-Severity: 5.0 (Medium)
-Location: Port 135/tcp
-QoD: 80%
-Summary: Allows remote attackers to enumerate system services.
-Impact: Information leakage that assists in reconnaissance for further attacks.
-Remediation: Filter Port 135 at the firewall level to allow only trusted administrative traffic.
-⚠️ SSL/TLS: Deprecated TLSv1.0 and TLSv1.1 Detection
-Severity: 4.3 (Medium)
-Location: Port 3389/tcp (RDP)
-QoD: 98%
-Summary: Weak encryption protocols are enabled for Remote Desktop.
-Impact: Susceptible to man-in-the-middle (MITM) attacks and credential theft.
-Remediation: Disable TLS 1.0/1.1 in Windows Registry/Group Policy and enforce TLS 1.2+.
-Summary Table of Actions
-Update Scanner Environment (Mandatory for accurate data).
-Restrict RPC (Port 135) via Network Security Groups or Firewalls.
-Hardening RDP (Port 3389) by disabling legacy TLS versions.
+🟡 MSRPC Service Enumeration
+Severity: 5.0
+Port: 135/tcp
+Issue: The system allows remote users to list internal services.
+Impact: Provides an attacker with a detailed map of the system's architecture.
+Fix: Restrict access to Port 135 using a host-based firewall.
+🟡 Deprecated TLS (v1.0/v1.1)
+Severity: 4.3
+Port: 3389/tcp (RDP)
+Issue: Remote Desktop is using obsolete encryption protocols.
+Impact: Vulnerable to decryption and Man-in-the-Middle (MITM) attacks.
+Fix: Disable TLS 1.0/1.1 via Registry/Group Policy and enforce TLS 1.2 or higher.
+Remediation Summary
+Update Environment: Refresh the scanner feed to ensure total visibility.
+Hardening: Block Port 135 and disable legacy TLS on Port 3389.
+Rescan: Perform a follow-up scan to verify all patches.
